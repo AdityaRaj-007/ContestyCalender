@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center w-full space-y-6 px-10">
       <div className="h-10 w-full"></div>
