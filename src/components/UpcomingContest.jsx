@@ -18,7 +18,7 @@ const UpcomingContest = () => {
 
   return (
     <>
-      <div className="grid grid-cols-4 gap-4 my-4">
+      <div className="grid lg:grid-cols-4 gap-4 my-4">
         {data?.objects?.length > 0 ? (
           data.objects.map((contest, index) => (
             <ContestCard contest={contest} key={index} />

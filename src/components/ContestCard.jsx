@@ -1,5 +1,5 @@
 import React from "react";
-import { getTimeLeft } from "../utils/data";
+import { createGoogleCalendarLink, getTimeLeft } from "../utils/data";
 
 const ContestCard = ({ contest }) => {
   const platform = contest.host.split(".")[0];
@@ -11,11 +11,18 @@ const ContestCard = ({ contest }) => {
   });
 
   getTimeLeft(contest.start);
+
   return (
     <div className="border border-gray-300 rounded-xl p-4">
       <div className="flex justify-between mb-3">
         <h1 className="capitalize">{platform}</h1>
-        <div className="cursor-pointer">
+        <div
+          className="cursor-pointer"
+          onClick={() => {
+            const link = createGoogleCalendarLink(contest);
+            window.open(link, "_blank");
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24px"

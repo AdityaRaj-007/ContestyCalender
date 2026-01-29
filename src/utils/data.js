@@ -84,3 +84,26 @@ export const getAllPastContests = async () => {
   //console.log(CLIST_API_KEY, CLIST_USERNAME);
   return data;
 };
+
+export function createGoogleCalendarLink(contest) {
+  console.log(contest);
+  const platform = contest.host.split(".")[0];
+  const start = new Date(contest.start + "Z").toLocaleString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const end = new Date(contest.end + "Z").toTimeString("en-us", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: contest.event,
+    dates: `${start}/${end}`,
+    details: `Contest on ${platform}\n${contest.href}`,
+    location: platform,
+  });
+
+  return `https://www.google.com/calendar/render?${params.toString()}`;
+}
