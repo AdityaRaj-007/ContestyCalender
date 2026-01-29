@@ -55,6 +55,7 @@ export const getAllFutureContests = async () => {
 
 export const fetchContestsByUrl = async (url) => {
   const response = await fetch(url);
+  if (!response.ok) throw new Error("Failed to fetch contests");
   const data = await response.json();
   console.log(data);
   console.log(data.meta.next);
