@@ -75,6 +75,6 @@ export const getAllPastContests = async () => {
   const response = await fetch(url);
   const data = await response.json();
   console.log(data.objects);
-  console.log(CLIST_API_KEY, CLIST_USERNAME);
+  //console.log(CLIST_API_KEY, CLIST_USERNAME);
   return data.objects;
 };
