@@ -26,11 +26,11 @@ export const getTimeLeft = (startDate) => {
   const now = new Date();
   const target = new Date(startDate);
 
-  console.log(now, target);
+  //console.log(now, target);
 
   let diff = target - now;
   const hours = Math.floor(diff / (1000 * 60 * 60));
-  console.log(hours);
+  //console.log(hours);
 };
 
 export const getAllFutureContests = async () => {
@@ -50,11 +50,15 @@ export const getAllFutureContests = async () => {
   const url = new URL(baseUrl);
   url.search = new URLSearchParams(queryParams).toString();
   //console.log(url.href);
+  return fetchContestsByUrl(url);
+};
+
+export const fetchContestsByUrl = async (url) => {
   const response = await fetch(url);
   const data = await response.json();
-  //console.log(data.objects);
-  //console.log(CLIST_API_KEY, CLIST_USERNAME);
-  return data.objects;
+  console.log(data);
+  console.log(data.meta.next);
+  return data;
 };
 
 export const getAllPastContests = async () => {
@@ -66,15 +70,16 @@ export const getAllPastContests = async () => {
     limit: 12,
     total_count: true,
     resource_id__in: "1,2,102",
-    start__lt: date,
+    end__lte: date,
     order_by: "-end",
   };
   const url = new URL(baseUrl);
   url.search = new URLSearchParams(queryParams).toString();
-  console.log(url.href);
+  //console.log(url.href);
   const response = await fetch(url);
   const data = await response.json();
-  console.log(data.objects);
+  //console.log(data.objects);
+  console.log(data.meta.next);
   //console.log(CLIST_API_KEY, CLIST_USERNAME);
-  return data.objects;
+  return data;
 };
