@@ -156,7 +156,7 @@ export const fetchContestSolution = async ({ host, contestName }) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "x-rapidapi-key": "6d7f9ca43fmsh0f1882f7fde7bd9p144553jsn10f6338d05c2",
+        "x-rapidapi-key": RAPID_API_KEY,
         "x-rapidapi-host": "youtube138.p.rapidapi.com",
       },
     });
