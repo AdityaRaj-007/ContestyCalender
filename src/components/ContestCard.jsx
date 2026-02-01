@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createGoogleCalendarLink, getTimeLeft } from "../utils/data";
 
 const ContestCard = ({ contest, isUpcoming = false }) => {
@@ -10,12 +10,17 @@ const ContestCard = ({ contest, isUpcoming = false }) => {
     minute: "2-digit",
   });
 
-  const timeLeftRef = useRef(null);
+  const [timeLeft, setTimeLeft] = useState(() => getTimeLeft(contest.start));
 
-  if (isUpcoming) {
-    const { days, hours, minutes } = getTimeLeft(contest.start);
-    timeLeftRef.current = { days, hours, minutes };
-  }
+  useEffect(() => {
+    if (!isUpcoming) return;
+
+    const intervalId = setInterval(() => {
+      setTimeLeft(getTimeLeft(contest.start));
+    }, 60 * 1000);
+
+    return () => clearInterval(intervalId);
+  }, [contest.start, isUpcoming]);
 
   return (
     <div className="border border-gray-300 rounded-xl p-4">
@@ -45,10 +50,10 @@ const ContestCard = ({ contest, isUpcoming = false }) => {
       </div>
       <div>{contestDate}</div>
       {isUpcoming && (
-        <div ref={timeLeftRef}>
-          <span>{timeLeftRef.current.days} Days</span>:
-          <span>{timeLeftRef.current.hours} h</span>:
-          <span>{timeLeftRef.current.minutes} min </span>Left
+        <div className="mt-2 bg-linear-to-r from-red-600 via-gray-900 to-red-600 text-white w-fit rounded-xl px-4 py-2">
+          <span>{timeLeft.days} Days : </span>
+          <span>{timeLeft.hours} h : </span>
+          <span>{timeLeft.minutes} min </span>Left
         </div>
       )}
     </div>
