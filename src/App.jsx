@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
+import SolutionPage from "./pages/SolutionPage";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="contests" element={<MainPage />} />
+        <Route path="contests/:id/solution/" element={<SolutionPage />} />
       </Routes>
       {/* <LandingPage /> */}
     </>

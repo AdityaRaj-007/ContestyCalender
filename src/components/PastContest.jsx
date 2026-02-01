@@ -19,7 +19,7 @@ const PastContest = () => {
     <>
       <div className="grid lg:grid-cols-4 gap-4 my-4">
         {data.objects.map((contest, index) => (
-          <ContestCard contest={contest} key={index} />
+          <ContestCard contest={contest} key={index} isPastContest={true} />
         ))}
       </div>
       <div className="flex w-full justify-end gap-x-4">

@@ -1,6 +1,6 @@
 const CLIST_API_KEY = import.meta.env.VITE_CLIST_API_KEY;
 const CLIST_USERNAME = import.meta.env.VITE_CLIST_USERNAME;
-const RAPID_API_KEY = import.meta.env.RAPID_API_KEY;
+const RAPID_API_KEY = import.meta.env.VITE_RAPID_API_KEY;
 const baseUrl = "https://clist.by:443/api/v4/contest/";
 
 function getFormattedDateTimeAtLocation() {
@@ -138,7 +138,7 @@ export function createGoogleCalendarLink(contest) {
 }
 
 export const fetchContestSolution = async ({ host, contestName }) => {
-  const query = host + " " + contestName + " solution";
+  const query = contestName;
 
   const queryParams = {
     q: query,
@@ -162,12 +162,27 @@ export const fetchContestSolution = async ({ host, contestName }) => {
     });
 
     const data = await response.json();
+
+    data?.contents?.sort((a, b) => b.video.stats.views - a.video.stats.views);
     console.log(data);
 
-    return data;
+    const videos = data.contents;
+    const solVideos = videos.filter((v) => v.video.title.includes(contestName));
+    return solVideos;
   } catch (err) {
-    console.log(err.message);
+    throw new Error("Error occurred while fetching constest solution.");
   }
+};
+
+export const fetchContestData = (id) => {
+  const queryParams = {
+    username: CLIST_USERNAME,
+    api_key: CLIST_API_KEY,
+  };
+  const url = new URL(baseUrl + id);
+
+  url.search = new URLSearchParams(queryParams).toString();
+  return fetchContestsByUrl(url);
 };
 
 //fetchContestSolution({ host: "Leetcode", contestName: "Biweekly Contest 175" });
