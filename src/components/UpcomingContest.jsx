@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import ContestCard from "../components/ContestCard";
 import { fetchContestsByUrl, getAllFutureContests } from "../utils/data";
+import SolutionPage from "../pages/SolutionPage";
 
 const UpcomingContest = () => {
   const [pageUrl, setPageUrl] = useState(null);
@@ -21,7 +22,7 @@ const UpcomingContest = () => {
       <div className="grid lg:grid-cols-4 gap-4 my-4">
         {data?.objects?.length > 0 ? (
           data.objects.map((contest, index) => (
-            <ContestCard contest={contest} key={index} />
+            <ContestCard contest={contest} key={index} isUpcoming={true} />
           ))
         ) : (
           <p>No More Contests...</p>
@@ -49,6 +50,7 @@ const UpcomingContest = () => {
           Next
         </button>
       </div>
+      {/* <SolutionPage /> */}
     </>
   );
 };

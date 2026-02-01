@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { createGoogleCalendarLink, getTimeLeft } from "../utils/data";
 
-const ContestCard = ({ contest }) => {
+const ContestCard = ({ contest, isUpcoming = false }) => {
   const platform = contest.host.split(".")[0];
   const contestDate = new Date(contest.start + "Z").toLocaleString("en-US", {
     month: "short",
@@ -10,7 +10,12 @@ const ContestCard = ({ contest }) => {
     minute: "2-digit",
   });
 
-  getTimeLeft(contest.start);
+  const timeLeftRef = useRef(null);
+
+  if (isUpcoming) {
+    const { days, hours, minutes } = getTimeLeft(contest.start);
+    timeLeftRef.current = { days, hours, minutes };
+  }
 
   return (
     <div className="border border-gray-300 rounded-xl p-4">
@@ -39,6 +44,13 @@ const ContestCard = ({ contest }) => {
         <a href={contest.href}>{contest.event}</a>
       </div>
       <div>{contestDate}</div>
+      {isUpcoming && (
+        <div ref={timeLeftRef}>
+          <span>{timeLeftRef.current.days} Days</span>:
+          <span>{timeLeftRef.current.hours} h</span>:
+          <span>{timeLeftRef.current.minutes} min </span>Left
+        </div>
+      )}
     </div>
   );
 };

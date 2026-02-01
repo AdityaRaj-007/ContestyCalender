@@ -1,13 +1,13 @@
 const CLIST_API_KEY = import.meta.env.VITE_CLIST_API_KEY;
 const CLIST_USERNAME = import.meta.env.VITE_CLIST_USERNAME;
+const RAPID_API_KEY = import.meta.env.RAPID_API_KEY;
 const baseUrl = "https://clist.by:443/api/v4/contest/";
 
 function getFormattedDateTimeAtLocation() {
   const date = new Date();
-
   const pad = (n) => String(n).padStart(2, "0");
 
-  return (
+  const formattedDate =
     date.getFullYear() +
     "-" +
     pad(date.getMonth() + 1) +
@@ -18,19 +18,33 @@ function getFormattedDateTimeAtLocation() {
     ":" +
     pad(date.getMinutes()) +
     ":" +
-    pad(date.getSeconds())
-  );
+    pad(date.getSeconds());
+
+  const local = new Date(formattedDate);
+  const utc = local.toISOString();
+
+  console.log(utc.split(".")[0]);
+  return utc.split(".")[0];
 }
 
 export const getTimeLeft = (startDate) => {
   const now = new Date();
-  const target = new Date(startDate);
+  const target = new Date(
+    startDate.endsWith("Z") ? startDate : startDate + "Z",
+  );
 
-  //console.log(now, target);
+  const diffMs = target - now;
 
-  let diff = target - now;
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  //console.log(hours);
+  if (diffMs <= 0) {
+    return { days: 0, hours: 0, minutes: 0 };
+  }
+
+  const totalMinutes = Math.floor(diffMs / (1000 * 60));
+  const days = Math.floor(totalMinutes / (60 * 24));
+  const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+  const minutes = totalMinutes % 60;
+
+  return { days, hours, minutes };
 };
 
 export const getAllFutureContests = async () => {
@@ -58,7 +72,7 @@ export const fetchContestsByUrl = async (url) => {
   if (!response.ok) throw new Error("Failed to fetch contests");
   const data = await response.json();
   console.log(data);
-  console.log(data.meta.next);
+  //console.log(data.meta.next);
   return data;
 };
 
@@ -77,12 +91,27 @@ export const getAllPastContests = async () => {
   const url = new URL(baseUrl);
   url.search = new URLSearchParams(queryParams).toString();
   //console.log(url.href);
-  const response = await fetch(url);
-  const data = await response.json();
-  //console.log(data.objects);
-  console.log(data.meta.next);
-  //console.log(CLIST_API_KEY, CLIST_USERNAME);
-  return data;
+  return fetchContestsByUrl(url);
+};
+
+export const getAllOngoingContest = () => {
+  const date = getFormattedDateTimeAtLocation();
+
+  const queryParams = {
+    username: CLIST_USERNAME,
+    api_key: CLIST_API_KEY,
+    limit: 12,
+    total_count: true,
+    resource_id__in: "1,2,102",
+    start__lte: date,
+    end__gte: date,
+    order_by: "-end",
+  };
+
+  const url = new URL(url);
+  url.search = new URLSearchParams(queryParams).toString();
+
+  return fetchContestsByUrl(url);
 };
 
 export function createGoogleCalendarLink(contest) {
@@ -107,3 +136,38 @@ export function createGoogleCalendarLink(contest) {
 
   return `https://www.google.com/calendar/render?${params.toString()}`;
 }
+
+export const fetchContestSolution = async ({ host, contestName }) => {
+  const query = host + " " + contestName + " solution";
+
+  const queryParams = {
+    q: query,
+    hl: "en",
+    gl: "US",
+    type: "video",
+  };
+
+  const url = new URL("https://youtube138.p.rapidapi.com/search/");
+  url.search = new URLSearchParams(queryParams).toString();
+
+  console.log(url);
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "x-rapidapi-key": "6d7f9ca43fmsh0f1882f7fde7bd9p144553jsn10f6338d05c2",
+        "x-rapidapi-host": "youtube138.p.rapidapi.com",
+      },
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    return data;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+//fetchContestSolution({ host: "Leetcode", contestName: "Biweekly Contest 175" });

@@ -3,6 +3,7 @@ import { getAllFutureContests, getAllPastContests } from "../utils/data";
 import ContestCard from "../components/ContestCard";
 import UpcomingContest from "../components/UpcomingContest";
 import PastContest from "../components/PastContest";
+import OngoingContest from "../components/OngoingContest";
 
 const MainPage = () => {
   return (
@@ -11,6 +12,11 @@ const MainPage = () => {
         <h1 className="font-bold text-2xl">
           Track upcoming competitive programing contests
         </h1>
+      </div>
+      <div className="w-full px-10 my-4">
+        <h1 className="pb-2 text-gray-500 text-lg">Ongoing Contests</h1>
+        <hr />
+        <OngoingContest />
       </div>
       <div className="w-full px-10 my-4">
         <h1 className="pb-2 text-gray-500 text-lg">Upcoming Contests</h1>
