@@ -39,12 +39,15 @@ export const getTimeLeft = (startDate) => {
     return { days: 0, hours: 0, minutes: 0 };
   }
 
-  const totalMinutes = Math.floor(diffMs / (1000 * 60));
-  const days = Math.floor(totalMinutes / (60 * 24));
-  const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
-  const minutes = totalMinutes % 60;
+  let totalSeconds = Math.floor(diffMs / 1000);
+  const days = Math.floor(totalSeconds / (60 * 24 * 60));
+  totalSeconds = totalSeconds % (60 * 24 * 60);
+  const hours = Math.floor(totalSeconds / (60 * 60));
+  totalSeconds = totalSeconds % (60 * 60);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
 
-  return { days, hours, minutes };
+  return { days, hours, minutes, seconds };
 };
 
 export const getAllFutureContests = async () => {

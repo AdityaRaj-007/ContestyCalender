@@ -11,7 +11,19 @@ const OngoingContest = () => {
   console.log(data);
   return (
     <div className="grid lg:grid-cols-4 gap-4 my-4">
-      {data?.objects?.length > 0 ? <></> : <p>No ongoing contests...</p>}
+      {data?.objects?.length > 0 ? (
+        <>
+          {data.objects.map((contest, index) => (
+            <ContestCard
+              contest={contest}
+              key={index}
+              isOngoingContest={true}
+            />
+          ))}
+        </>
+      ) : (
+        <p>No ongoing contests...</p>
+      )}
     </div>
   );
 };
