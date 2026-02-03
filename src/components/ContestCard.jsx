@@ -75,7 +75,7 @@ const ContestCard = ({
         <div className="mt-2 bg-linear-to-r from-red-600 via-gray-900 to-red-600 text-white w-fit rounded-xl px-4 py-2">
           <span>{timeLeft.days} Days : </span>
           <span>{timeLeft.hours} h : </span>
-          <span>{timeLeft.minutes} min</span>Left
+          <span>{timeLeft.minutes} min </span>Left
         </div>
       )}
 
