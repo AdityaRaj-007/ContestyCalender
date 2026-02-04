@@ -99,6 +99,7 @@ export const getAllPastContests = async () => {
 
 export const getAllOngoingContest = () => {
   const date = getFormattedDateTimeAtLocation();
+  console.log(date);
 
   const queryParams = {
     username: CLIST_USERNAME,
@@ -111,7 +112,7 @@ export const getAllOngoingContest = () => {
     order_by: "-end",
   };
 
-  const url = new URL(url);
+  const url = new URL(baseUrl);
   url.search = new URLSearchParams(queryParams).toString();
 
   return fetchContestsByUrl(url);

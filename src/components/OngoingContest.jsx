@@ -1,14 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import React from "react";
 import { getAllOngoingContest } from "../utils/data";
+import ContestCard from "../components/ContestCard";
 
 const OngoingContest = () => {
   const { error, data, isPending, isError } = useQuery({
     queryKey: ["ongoingContests"],
     queryFn: getAllOngoingContest,
+    placeholderData: keepPreviousData,
   });
 
   console.log(data);
+
+  if (isPending) return <div>Loading...</div>;
+
+  if (isError) return <div>{error.message}</div>;
+
   return (
     <div className="grid lg:grid-cols-4 gap-4 my-4">
       {data?.objects?.length > 0 ? (
