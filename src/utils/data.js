@@ -183,7 +183,7 @@ export const fetchContestData = (id) => {
     username: CLIST_USERNAME,
     api_key: CLIST_API_KEY,
   };
-  const url = new URL(baseUrl + id);
+  const url = new URL(baseUrl + id + "/");
 
   url.search = new URLSearchParams(queryParams).toString();
   return fetchContestsByUrl(url);

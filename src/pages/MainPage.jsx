@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { getAllFutureContests, getAllPastContests } from "../utils/data";
-import ContestCard from "../components/ContestCard";
 import UpcomingContest from "../components/UpcomingContest";
 import PastContest from "../components/PastContest";
 import OngoingContest from "../components/OngoingContest";
+import BreadCrumbs from "../components/BreadCrumbs";
 
 const MainPage = () => {
   return (
-    <div className="min-h-screen w-full p-6 flex flex-col items-center gap-4">
+    <div className="min-h-screen w-full py-1 px-6 flex flex-col items-center gap-4">
+      <BreadCrumbs />
       <div className="w-full p-4 text-center">
         <h1 className="font-bold text-2xl">
           Track upcoming competitive programing contests
